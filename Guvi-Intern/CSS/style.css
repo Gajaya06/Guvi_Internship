@@ -1,0 +1,82 @@
+/* Smooth fade-in effect */
+.fade-in {
+    animation: fadeIn 0.9s ease-in-out;
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Card styling */
+.custom-card {
+    border-radius: 18px;
+    border: none;
+    background: #ffffffd9;
+    backdrop-filter: blur(6px);
+    transition: 0.3s;
+}
+
+.custom-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+}
+
+/* Input glow effect */
+.custom-input:focus {
+    border-color: #4e9cff !important;
+    box-shadow: 0 0 8px #4e9cff80 !important;
+    transition: 0.2s;
+}
+
+/* Animated button */
+.btn-animate {
+    transition: 0.3s ease-in-out;
+    font-weight: 600;
+}
+
+.btn-animate:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 15px rgba(0,123,255,0.3);
+}
+
+/* Label animation / floating label */
+.floating-label-group {
+    position: relative;
+}
+
+.floating-label-group input {
+    padding-top: 20px;
+}
+
+.floating-label-group label {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    font-size: 14px;
+    color: #777;
+    transition: 0.3s;
+}
+
+.floating-label-group input:focus + label,
+.floating-label-group input:not(:placeholder-shown) + label {
+    top: -6px;
+    left: 8px;
+    font-size: 12px;
+    color: #0066ff;
+}
+
+/* Background gradient */
+body {
+    background: linear-gradient(135deg, #a1c4fd, #c2e9fb);
+    min-height: 100vh;
+}
+
+/* Button gradient */
+.btn-primary, .btn-success {
+    background: linear-gradient(135deg, #006eff, #00c6ff);
+    border: none;
+}
+.btn-danger {
+    background: linear-gradient(135deg, #ff416c, #ff4b2b);
+    border: none;
+}
