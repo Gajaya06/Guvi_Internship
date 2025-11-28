@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Profile</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    .profile-card { padding: 24px; max-width:480px; margin:40px auto; border-radius:8px; background:#fff; box-shadow:0 4px 16px rgba(0,0,0,0.06);}
+    .profile-row { margin-bottom:12px; }
+  </style>
+</head>
+<body>
+  <div class="profile-card">
+    <h3 id="p_name">User</h3>
+    <div class="profile-row"><strong>Email:</strong> <span id="p_email"></span></div>
+    <div class="profile-row"><strong>Phone:</strong> <span id="p_phone"></span></div>
+    <div style="margin-top:16px">
+      <button id="logoutBtn" class="btn btn-outline-primary">Logout</button>
+    </div>
+  </div>
+
+  <script>
+  (function(){
+    function ready(fn){ if (document.readyState !== 'loading') fn(); else document.addEventListener('DOMContentLoaded', fn); }
+
+    ready(function(){
+      var raw = localStorage.getItem('currentUser');
+      if (!raw) { window.location.href = 'index.html'; return; }
+      var user;
+      try { user = JSON.parse(raw); } catch(e){ window.location.href = 'index.html'; return; }
+
+      document.getElementById('p_name').textContent = user.name || 'Profile';
+      document.getElementById('p_email').textContent = user.email || '';
+      document.getElementById('p_phone').textContent = user.phone || '';
+
+      document.getElementById('logoutBtn').addEventListener('click', function(){
+        localStorage.removeItem('currentUser');
+        window.location.href = 'index.html';
+      });
+    });
+  })();
+  </script>
+</body>
+</html>
