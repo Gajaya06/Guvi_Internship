@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Profile</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- <link rel="stylesheet" href="assets/css/style.css"> -->
+
+  <style>
+    :root {
+      --primary: #ffd86b;
+      --primary-dark: #d6a83b;
+      --bg-dark: #060a10;
+      --bg-card: rgba(255, 255, 255, 0.03);
+      --text-light: #e6eef6;
+      --text-muted: #8b9bb5;
+      --danger: #e74c3c;
+      --success: #2ecc71;
+    }
+    
+    body {
+      background: radial-gradient(1200px 600px at 6% 10%, rgba(11,22,36,0.95), rgba(6,10,16,0.97)) fixed;
+      color: var(--text-light);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 14px;
+      font-family: 'Inter', system-ui, -apple-system, "Segoe UI", sans-serif;
+    }
+    
+    .profile-card {
+      width: 700px;
+      max-width: calc(100% - 40px);
+      background: var(--bg-card);
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 20px 60px rgba(2, 6, 23, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(10px);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .profile-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--primary), transparent);
+    }
+    
+    .avatar-container {
+      position: relative;
+      display: inline-block;
+    }
+    
+    .avatar {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 16px;
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+      transition: all 0.3s ease;
+    }
+    
+    .avatar-container:hover .avatar {
+      transform: scale(1.02);
+      box-shadow: 0 15px 50px rgba(0, 0, 0, 0.7);
+    }
+    
+    .avatar-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    
+    .avatar-container:hover .avatar-overlay {
+      opacity: 1;
+    }
+    
+    .field {
+      position: relative;
+      margin-bottom: 20px;
+    }
+    
+    .field .input {
+      width: 100%;
+      padding: 18px 16px 10px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-light);
+      transition: all 0.3s ease;
+      font-size: 1rem;
+    }
+    
+    .field .input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(255, 216, 107, 0.2);
+    }
+    
+    .field .flabel {
+      position: absolute;
+      left: 16px;
+      top: 14px;
+      transition: 0.2s ease;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      pointer-events: none;
+    }
+    
+    .field.filled .flabel,
+    .field .input:focus + .flabel {
+      transform: translateY(-70%) scale(0.85);
+      color: var(--primary);
+    }
+    
+    .btn-cta {
+      background: linear-gradient(90deg, var(--primary-dark), var(--primary));
+      color: #000;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 12px;
+      font-weight: 700;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(214, 168, 59, 0.3);
+    }
+    
+    .btn-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(214, 168, 59, 0.4);
+    }
+    
+    .btn-outline-light {
+      border-color: rgba(255, 255, 255, 0.2);
+      color: var(--text-light);
+      transition: all 0.3s ease;
+    }
+    
+    .btn-outline-light:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+    
+    .btn-success {
+      background: linear-gradient(90deg, #27ae60, var(--success));
+      border: none;
+      border-radius: 12px;
+      padding: 12px 24px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-success:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(46, 204, 113, 0.4);
+    }
+    
+    .btn-danger {
+      background: linear-gradient(90deg, #c0392b, var(--danger));
+      border: none;
+      border-radius: 12px;
+      padding: 12px 24px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-danger:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
+    }
+    
+    .section-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 20px;
+      color: var(--text-light);
+      position: relative;
+      padding-bottom: 8px;
+    }
+    
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 40px;
+      height: 2px;
+      background: var(--primary);
+    }
+    
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+      margin: 30px 0;
+    }
+    
+    .profile-header {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 30px;
+    }
+    
+    .profile-info {
+      flex: 1;
+      padding-left: 30px;
+    }
+    
+    .profile-name {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+    
+    .profile-email {
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+    
+    .profile-lastlogin {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-bottom: 15px;
+    }
+    
+    .action-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+    }
+    
+    .status-indicator {
+      display: inline-flex;
+      align-items: center;
+      font-size: 0.85rem;
+      padding: 4px 10px;
+      border-radius: 20px;
+      background: rgba(46, 204, 113, 0.15);
+      color: var(--success);
+      margin-top: 5px;
+    }
+    
+    .status-indicator::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--success);
+      margin-right: 6px;
+    }
+    
+    @media (max-width: 768px) {
+      .profile-header {
+        flex-direction: column;
+        text-align: center;
+      }
+      
+      .profile-info {
+        padding-left: 0;
+        margin-top: 20px;
+      }
+      
+      .action-buttons {
+        justify-content: center;
+      }
+    }
+  </style>
+
+
+</head>
+<body>
+
+<div class="profile-card">
+  <div class="profile-header">
+    <div class="avatar-container">
+        <img id="p_avatar" class="avatar" src="https://via.placeholder.com/140?text=Avatar"/>
+      <div class="avatar-overlay">
+        <button id="uploadBtn" class="btn btn-sm btn-light">
+          <i class="fas fa-camera me-1"></i> Change
+        </button>
+        <input type="file" id="avatarInput" accept="image/*" style="display:none">
+      </div>
+    </div>
+    
+<div class="profile-info">
+
+
+    <h2 class="profile-name" id="p_name"> </h2>
+      <div class="profile-email" id="p_email" class="text-muted"></div>
+      <div class="profile-lastlogin" id="p_lastlogin" class="text-muted mb-2"></div>
+      <div class="status-indicator">Online</div>
+  
+
+       <div class="action-buttons">
+        <button onclick="logoutUser()" class="btn btn-outline-light btn-sm">
+          <i class="fas fa-sign-out-alt me-1"></i> Logout
+        </button>
+        <button id="editBtnTop" class="btn btn-cta btn-sm" style="display:none;">
+          <i class="fas fa-save me-1"></i> Save
+        </button>
+      </div>
+    </div>
+
+  </div>  
+
+        <!-- Profile Information -->
+  <h5 class="section-title">Personal Information</h5>
+  
+  <div class="field">
+    <input id="input_name" class="input" name="name" type="text" readonly>
+    <label class="flabel">Full Name</label>
+  </div>
+
+  <div class="field">
+    <input id="input_phone" class="input" name="phone"type="text" readonly>
+    <label class="flabel">Phone Number</label>
+  </div>
+
+  <button id="editBtn" class="btn-cta w-100">
+    <i class="fas fa-edit me-2"></i> Edit Profile
+  </button>
+
+  <div class="divider"></div>
+
+    <!-- Password Section -->
+  <h5 class="section-title">Change Password</h5>
+
+  <div class="field">
+    <input id="currentPw" name="current_password"class="input" type="password">
+    <label class="flabel">Current Password</label>
+  </div>
+
+  <div class="field">
+    <input id="newPw" class="input" name="new_password" type="password">
+    <label class="flabel">New Password</label>
+  </div>
+
+  <div class="field">
+    <input id="confirmPw" class="input" name="new_password" type="password">
+    <label class="flabel">Confirm Password</label>
+  </div>
+
+  <button id="changePwBtn" class="btn btn-success w-100">
+    <i class="fas fa-key me-2"></i> Update Password
+  </button>
+
+  <div class="divider"></div>
+
+   <!-- Danger Zone -->
+  <h5 class="section-title">Account Management</h5>
+  <p class="text-muted mb-3">Permanently delete your account and all associated data.</p>
+  
+  <button id="deleteBtn" class="btn btn-danger w-100">
+    <i class="fas fa-trash-alt me-2"></i> Delete Account
+  </button>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="assets/js/main.js"></script>
+
+<script>
+function logoutUser() {
+    localStorage.removeItem("session_id");
+    location.href = "index.html";
+}
+</script>
+
+</body>
+</html>
